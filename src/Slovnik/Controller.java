@@ -23,7 +23,7 @@ public class Controller {
         Stage stage = (Stage) gp.getScene().getWindow();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a File");
-        FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("TXT", "*.txt");
+        FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
         fileChooser.getExtensionFilters().add(extensionFilter);
         //for showing the popup window to open file
         File file=fileChooser.showOpenDialog(stage);
