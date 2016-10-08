@@ -20,10 +20,12 @@
    <children>
       <Pane prefHeight="600.0" prefWidth="800.0" GridPane.rowIndex="1">
          <children>
-            <Button fx:id="openNew" layoutX="358.0" layoutY="14.0" mnemonicParsing="false" onAction="#open" prefHeight="25.0" prefWidth="218.0" text="Vybrat soubor pro vytvoření slovníku" />
-            <Button fx:id="openExisting" layoutX="587.0" layoutY="14.0" mnemonicParsing="false" text="Načíst existující slovník ze souboru" />
             <Text fx:id="statusText" layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="400.0" />
+            <Button fx:id="openNew" layoutX="358.0" layoutY="14.0" mnemonicParsing="false" onAction="#open" prefHeight="25.0" prefWidth="218.0" text="Vybrat soubor pro vytvoření slovníku" />
+            <Button fx:id="openExisting" layoutX="587.0" layoutY="14.0" mnemonicParsing="false" onAction="#importFile" text="Načíst existující slovník ze souboru" />
+            <Text fx:id="dictionaryText" layoutX="586.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Používaný slovník" textAlignment="CENTER" wrappingWidth="200.0" />
             <ListView fx:id="listView" layoutX="586.0" layoutY="79.0" prefHeight="300.0" prefWidth="200.0" />
+            <Button fx:id="Export" layoutX="587.0" layoutY="389.0" mnemonicParsing="false" onAction="#export" prefHeight="25.0" prefWidth="200.0" text="Exportovat slovník" />
          </children>
       </Pane>
    </children>
