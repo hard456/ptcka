@@ -25,6 +25,8 @@ public class Controller {
     @FXML
     public ListView listView;
     @FXML
+    public Text dictionaryText;
+    @FXML
     private GridPane gp;
 
     String word;
@@ -39,7 +41,7 @@ public class Controller {
         File file=fileChooser.showOpenDialog(stage);
         if(file != null) {
             dictionary.clear();
-            statusText.setText("Vybraný soubor: " + file.getName().toString());
+            //statusText.setText("Vybraný soubor: " + file.getName().toString());
             try{
                 Scanner sc = new Scanner(file);
                 while(sc.hasNext()){
@@ -52,10 +54,11 @@ public class Controller {
                 dictionary.addAll(hs);
                 Collections.sort(dictionary, String.CASE_INSENSITIVE_ORDER);
                 listView.setItems(FXCollections.observableList(dictionary));
+                dictionaryText.setText("Používaný slovník (" + dictionary.size() + " slov)");
                 sc.close();
             } catch (Exception e){}
         }
-        else statusText.setText("Nebyl vybrán žádný soubor");
+        //else statusText.setText("Nebyl vybrán žádný soubor");
     }
 
     public void export() {
@@ -83,7 +86,7 @@ public class Controller {
         File file=fileChooser.showOpenDialog(stage);
         if(file != null) {
             dictionary.clear();
-            statusText.setText("Vybraný soubor: " + file.getName().toString());
+            //statusText.setText("Vybraný soubor: " + file.getName().toString());
             try{
                 Scanner sc = new Scanner(file);
                 while(sc.hasNext()){
@@ -91,8 +94,9 @@ public class Controller {
                 }
                 sc.close();
                 listView.setItems(FXCollections.observableList(dictionary));
+                dictionaryText.setText("Používaný slovník (" + dictionary.size() + " slov)");
             } catch (Exception e){}
         }
-        else statusText.setText("Nebyl vybrán žádný soubor");
+        //else statusText.setText("Nebyl vybrán žádný soubor");
     }
 }
