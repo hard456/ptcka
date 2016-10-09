@@ -62,9 +62,18 @@ public class Controller {
     }
 
     public void export() {
+        Stage stage = (Stage) gp.getScene().getWindow();
+        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
+
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialFileName("slovnik-" + timeStamp + ".txt");
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(stage);
         try {
-            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-            FileWriter writer = new FileWriter("slovnik-" + timeStamp + ".txt");
+            FileWriter writer = new FileWriter(file);
             for (String str : dictionary) {
                 writer.write(str + System.lineSeparator());
             }
