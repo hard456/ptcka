@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -23,13 +24,19 @@ public class Controller {
     @FXML
     public Button openExisting;
     @FXML
+    public Button importText;
+    @FXML
+    public TextArea newText;
+    @FXML
     public ListView listView;
     @FXML
     public Text dictionaryText;
     @FXML
     private GridPane gp;
 
+    static Scanner sc;
     String word;
+    String text = "";
     ArrayList<String> dictionary = new ArrayList();
 
     public void open() {
@@ -43,10 +50,10 @@ public class Controller {
             dictionary.clear();
             //statusText.setText("Vybraný soubor: " + file.getName().toString());
             try{
-                Scanner sc = new Scanner(file);
+                sc = new Scanner(file,"UTF-8");
                 while(sc.hasNext()){
                     word = sc.next().toLowerCase();
-                    word = word.replaceAll("[,.;!?()]","");
+                    word = word.replaceAll("[,.;!?()/]","");
                     dictionary.add(word);
                 }
                 Set<String> hs = new HashSet(dictionary);
@@ -95,7 +102,7 @@ public class Controller {
             dictionary.clear();
             //statusText.setText("Vybraný soubor: " + file.getName().toString());
             try{
-                Scanner sc = new Scanner(file);
+                sc = new Scanner(file);
                 while(sc.hasNext()){
                     dictionary.add(sc.next());
                 }
@@ -106,4 +113,30 @@ public class Controller {
         }
         //else statusText.setText("Nebyl vybrán žádný soubor");
     }
+
+    public void importText(){
+        int count = 0;
+        Stage stage = (Stage) gp.getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose a File");
+        FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        File file=fileChooser.showOpenDialog(stage);
+        if(file != null) {
+            try {
+                sc = new Scanner(file);
+                while(sc.hasNext()){
+                    if(count !=0){
+                        text += " ";
+                    }
+                    count++;
+                    text +=sc.next();
+                }
+                newText.setText(text);
+                sc.close();
+            }
+            catch (Exception e){}
+        }
+    }
+
 }
