@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import java.net.URL?>
+
+<GridPane fx:id="gp" alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Slovnik.Controller">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <Pane prefHeight="600.0" prefWidth="800.0" GridPane.rowIndex="1">
+         <children>
+            <Text id="labels" layoutX="165.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vyhledávání v textu" textAlignment="CENTER" wrappingWidth="218.0" />
+            <Text id="labels" layoutX="569.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Slovník" textAlignment="CENTER" wrappingWidth="218.0" />
+            <Separator layoutX="508.0" orientation="VERTICAL" prefHeight="580.0" prefWidth="86.0" />
+            <Text fx:id="statusText" layoutX="568.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="218.0" />
+            <Button fx:id="openNew" layoutX="568.0" layoutY="35.0" mnemonicParsing="false" onAction="#open" prefHeight="25.0" prefWidth="218.0" text="Vybrat soubor pro vytvoření slovníku" />
+            <Button fx:id="openExisting" layoutX="568.0" layoutY="81.0" mnemonicParsing="false" onAction="#importFile" prefHeight="25.0" prefWidth="218.0" text="Načíst existující slovník ze souboru" />
+            <Text fx:id="dictionaryText" layoutX="568.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Používaný slovník" textAlignment="CENTER" wrappingWidth="218.0" />
+            <ListView fx:id="listView" layoutX="568.0" layoutY="146.0" prefHeight="300.0" prefWidth="218.0" />
+            <Button fx:id="Export" layoutX="569.0" layoutY="456.0" mnemonicParsing="false" onAction="#export" prefHeight="25.0" prefWidth="218.0" text="Exportovat slovník" />
+            <TextArea fx:id="newText" layoutX="14.0" layoutY="80.0" prefHeight="175.0" prefWidth="520.0" />
+            <Text layoutX="14.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text pro vyhledávání" wrappingWidth="218.0" />
+            <TextField layoutX="293.0" layoutY="275.0" prefHeight="21.0" prefWidth="161.0" promptText="Vyhledat ve slovníku"/>
+            <Button layoutX="469.0" layoutY="275.0" mnemonicParsing="false" text="Hledat" />
+            <Button fx:id="importText" onAction="#importText" layoutX="425.0" layoutY="35.0" mnemonicParsing="false" text="Načtení textu" />
+         </children>
+      </Pane>
+   </children>
+
+   <stylesheets>
+      <URL value="@styles.css" />
+   </stylesheets>
+</GridPane>
