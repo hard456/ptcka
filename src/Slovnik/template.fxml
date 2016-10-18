@@ -27,15 +27,15 @@
             <Separator layoutX="508.0" orientation="VERTICAL" prefHeight="580.0" prefWidth="86.0" />
             <Text fx:id="statusText" layoutX="568.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="218.0" />
             <Button fx:id="openNew" layoutX="568.0" layoutY="35.0" mnemonicParsing="false" onAction="#open" prefHeight="25.0" prefWidth="218.0" text="Vybrat soubor pro vytvoření slovníku" />
-            <Button fx:id="openExisting" layoutX="568.0" layoutY="81.0" mnemonicParsing="false" onAction="#importFile" prefHeight="25.0" prefWidth="218.0" text="Načíst existující slovník ze souboru" />
+            <Button fx:id="openExisting" layoutX="568.0" layoutY="81.0" mnemonicParsing="false" onAction="#importMessageBox" prefHeight="25.0" prefWidth="218.0" text="Načíst existující slovník ze souboru" />
             <Text fx:id="dictionaryText" layoutX="568.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Používaný slovník" textAlignment="CENTER" wrappingWidth="218.0" />
             <ListView fx:id="listView" layoutX="568.0" layoutY="146.0" prefHeight="300.0" prefWidth="218.0" />
-            <Button fx:id="Export" layoutX="569.0" layoutY="456.0" mnemonicParsing="false" onAction="#export" prefHeight="25.0" prefWidth="218.0" text="Exportovat slovník" />
+            <Button fx:id="Export" layoutX="569.0" layoutY="456.0" mnemonicParsing="false" onAction="#exportMessageBox" prefHeight="25.0" prefWidth="218.0" text="Exportovat slovník" />
             <TextArea fx:id="newText" layoutX="14.0" layoutY="80.0" prefHeight="175.0" prefWidth="520.0" />
             <Text layoutX="14.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text pro vyhledávání" wrappingWidth="218.0" />
-            <TextField layoutX="293.0" layoutY="275.0" prefHeight="21.0" prefWidth="161.0" promptText="Vyhledat ve slovníku"/>
+            <TextField layoutX="293.0" layoutY="275.0" prefHeight="21.0" prefWidth="161.0" promptText="Vyhledat ve slovníku" />
             <Button layoutX="469.0" layoutY="275.0" mnemonicParsing="false" text="Hledat" />
-            <Button fx:id="importText" onAction="#importText" layoutX="425.0" layoutY="35.0" mnemonicParsing="false" text="Načtení textu" />
+            <Button fx:id="importText" layoutX="425.0" layoutY="35.0" mnemonicParsing="false" onAction="#importText" text="Načtení textu" />
          </children>
       </Pane>
    </children>
