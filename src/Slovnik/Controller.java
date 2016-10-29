@@ -2,17 +2,13 @@ package Slovnik;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileWriter;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -34,14 +30,15 @@ public class Controller {
     @FXML
     private GridPane gp;
 
-    static Scanner sc;
+    private static FileChooser fileChooser;
+    private static Scanner sc;
     String word;
     String text = "";
     ArrayList<String> dictionary = new ArrayList();
 
     public void open() {
         Stage stage = (Stage) gp.getScene().getWindow();
-        FileChooser fileChooser = new FileChooser();
+        fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a File");
         FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
         fileChooser.getExtensionFilters().add(extensionFilter);
@@ -71,7 +68,7 @@ public class Controller {
     public void export() {
         Stage stage = (Stage) gp.getScene().getWindow();
         String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-        FileChooser fileChooser = new FileChooser();
+        fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
         fileChooser.setInitialFileName("slovnik-" + timeStamp + ".txt");
@@ -93,7 +90,7 @@ public class Controller {
 
     public void importFile() {
         Stage stage = (Stage) gp.getScene().getWindow();
-        FileChooser fileChooser = new FileChooser();
+        fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a File");
         FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
         fileChooser.getExtensionFilters().add(extensionFilter);
@@ -102,7 +99,7 @@ public class Controller {
             dictionary.clear();
             //statusText.setText("Vybraný soubor: " + file.getName().toString());
             try{
-                sc = new Scanner(file);
+                sc = new Scanner(file, "UTF-8");
                 while(sc.hasNext()){
                     dictionary.add(sc.next());
                 }
@@ -116,27 +113,112 @@ public class Controller {
 
     public void importText(){
         int count = 0;
+        newText.setMaxWidth(520);
+        newText.setWrapText(true);
         Stage stage = (Stage) gp.getScene().getWindow();
-        FileChooser fileChooser = new FileChooser();
+        fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a File");
         FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
         fileChooser.getExtensionFilters().add(extensionFilter);
         File file=fileChooser.showOpenDialog(stage);
         if(file != null) {
             try {
-                sc = new Scanner(file);
+                sc = new Scanner(file, "UTF-8");
                 while(sc.hasNext()){
-                    if(count !=0){
+                   if(count !=0){
                         text += " ";
                     }
                     count++;
+                    text += " ";
                     text +=sc.next();
                 }
+                System.out.println(text);
                 newText.setText(text);
                 sc.close();
             }
             catch (Exception e){}
         }
+    }
+
+    public void exportCSV() throws FileNotFoundException {
+        String csvText = "";
+        Stage stage = (Stage) gp.getScene().getWindow();
+        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
+        fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV soubor", "*.csv");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialFileName("slovnik-" + timeStamp + ".csv");
+
+        File file = fileChooser.showSaveDialog(stage);
+        try {
+            FileWriter writer = new FileWriter(file);
+        for (String temp : dictionary) {
+            csvText = csvText + temp + ";";
+        }
+            writer.write(csvText);
+            writer.close();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Slovník byl vyexportován");
+            alert.setTitle("Export slovníku");
+            alert.setGraphic(null);
+            alert.setHeaderText(null);
+            alert.showAndWait();
+        } catch (Exception e){}
+    }
+
+    public void importCSV(){
+        Stage stage = (Stage) gp.getScene().getWindow();
+        fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose a File");
+        FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("CSV soubor", "*.csv");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        File file=fileChooser.showOpenDialog(stage);
+
+        if(file != null) {
+            dictionary.clear();
+            //statusText.setText("Vybraný soubor: " + file.getName().toString());
+            try{
+                sc = new Scanner(file,"UTF-8");
+                while (sc.hasNext()) {
+                    String temp = sc.next();
+                    String[] items = temp.split(";");
+                    for (int i = 0; i < items.length; i++){
+                        dictionary.add(items[i]);
+                    }
+            }
+                sc.close();
+                listView.setItems(FXCollections.observableList(dictionary));
+                dictionaryText.setText("Používaný slovník (" + dictionary.size() + " slov)");
+                sc.close();
+            } catch (Exception e){}
+        }
+    }
+
+    public void importMessageBox(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Import slovníku");
+        alert.setHeaderText("Výběr typu souboru");
+        ButtonType csvButton = new ButtonType("CSV");
+        ButtonType txtButton = new ButtonType("TXT");
+        ButtonType exitButton = new ButtonType("Zrušit", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(csvButton,txtButton,exitButton);
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get() == csvButton) importCSV();
+        else if(result.get() == txtButton) importFile();
+        else alert.close();
+    }
+
+    public void exportMessageBox() throws FileNotFoundException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Export slovníku");
+        alert.setHeaderText("Výběr typu souboru");
+        ButtonType csvButton = new ButtonType("CSV");
+        ButtonType txtButton = new ButtonType("TXT");
+        ButtonType exitButton = new ButtonType("Zrušit", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(csvButton,txtButton,exitButton);
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get() == csvButton) exportCSV();
+        else if(result.get() == txtButton) export();
+        else alert.close();
     }
 
 }
