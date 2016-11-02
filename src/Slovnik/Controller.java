@@ -62,8 +62,10 @@ public class Controller {
                 sc = new Scanner(file, "UTF-8");
                 while (sc.hasNext()) {
                     word = sc.next().toLowerCase();
-                    word = word.replaceAll("[,.;!?()/]", "");
-                    dictionary.add(word);
+                    word = word.replaceAll("[\\d%,.;!?()\\[\\]{}/]", "");
+                    if(!word.equals("")){
+                        dictionary.add(word);
+                    }
                 }
                 Set<String> hs = new HashSet(dictionary);
                 dictionary.clear();
