@@ -11,13 +11,17 @@ import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 
+    public static FXMLLoader fxml;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("template.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("template.fxml"));
+        Parent root = loader.load();
         primaryStage.setTitle("PT - Slovník");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.setResizable(false);
         primaryStage.show();
+        fxml = loader;
 
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override

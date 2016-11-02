@@ -3,11 +3,17 @@ package Slovnik;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.swing.text.html.*;
+import java.awt.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -29,28 +35,34 @@ public class Controller {
     public Text dictionaryText;
     @FXML
     private GridPane gp;
+    @FXML
+    private TextField key;
+    @FXML
+    private Text keyText;
+    @FXML
+    private ListView listOfIndexes;
 
     private static FileChooser fileChooser;
     private static Scanner sc;
     String word;
-    String text = "";
+    public String text = "";
     ArrayList<String> dictionary = new ArrayList();
 
     public void open() {
         Stage stage = (Stage) gp.getScene().getWindow();
         fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a File");
-        FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
         fileChooser.getExtensionFilters().add(extensionFilter);
-        File file=fileChooser.showOpenDialog(stage);
-        if(file != null) {
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
             dictionary.clear();
             //statusText.setText("Vybraný soubor: " + file.getName().toString());
-            try{
-                sc = new Scanner(file,"UTF-8");
-                while(sc.hasNext()){
+            try {
+                sc = new Scanner(file, "UTF-8");
+                while (sc.hasNext()) {
                     word = sc.next().toLowerCase();
-                    word = word.replaceAll("[,.;!?()/]","");
+                    word = word.replaceAll("[,.;!?()/]", "");
                     dictionary.add(word);
                 }
                 Set<String> hs = new HashSet(dictionary);
@@ -60,7 +72,8 @@ public class Controller {
                 listView.setItems(FXCollections.observableList(dictionary));
                 dictionaryText.setText("Používaný slovník (" + dictionary.size() + " slov)");
                 sc.close();
-            } catch (Exception e){}
+            } catch (Exception e) {
+            }
         }
         //else statusText.setText("Nebyl vybrán žádný soubor");
     }
@@ -85,58 +98,60 @@ public class Controller {
             alert.setGraphic(null);
             alert.setHeaderText(null);
             alert.showAndWait();
-        } catch (Exception e){}
+        } catch (Exception e) {
+        }
     }
 
     public void importFile() {
         Stage stage = (Stage) gp.getScene().getWindow();
         fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a File");
-        FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
         fileChooser.getExtensionFilters().add(extensionFilter);
-        File file=fileChooser.showOpenDialog(stage);
-        if(file != null) {
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
             dictionary.clear();
             //statusText.setText("Vybraný soubor: " + file.getName().toString());
-            try{
+            try {
                 sc = new Scanner(file, "UTF-8");
-                while(sc.hasNext()){
+                while (sc.hasNext()) {
                     dictionary.add(sc.next());
                 }
                 sc.close();
                 listView.setItems(FXCollections.observableList(dictionary));
                 dictionaryText.setText("Používaný slovník (" + dictionary.size() + " slov)");
-            } catch (Exception e){}
+            } catch (Exception e) {
+            }
         }
         //else statusText.setText("Nebyl vybrán žádný soubor");
     }
 
-    public void importText(){
+    public void importText() {
         int count = 0;
         newText.setMaxWidth(520);
         newText.setWrapText(true);
         Stage stage = (Stage) gp.getScene().getWindow();
         fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a File");
-        FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
         fileChooser.getExtensionFilters().add(extensionFilter);
-        File file=fileChooser.showOpenDialog(stage);
-        if(file != null) {
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
             try {
                 sc = new Scanner(file, "UTF-8");
-                while(sc.hasNext()){
-                   if(count !=0){
+                while (sc.hasNext()) {
+                    if (count != 0) {
                         text += " ";
                     }
                     count++;
                     text += " ";
-                    text +=sc.next();
+                    text += sc.next();
                 }
                 System.out.println(text);
                 newText.setText(text);
                 sc.close();
+            } catch (Exception e) {
             }
-            catch (Exception e){}
         }
     }
 
@@ -152,9 +167,9 @@ public class Controller {
         File file = fileChooser.showSaveDialog(stage);
         try {
             FileWriter writer = new FileWriter(file);
-        for (String temp : dictionary) {
-            csvText = csvText + temp + ";";
-        }
+            for (String temp : dictionary) {
+                csvText = csvText + temp + ";";
+            }
             writer.write(csvText);
             writer.close();
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Slovník byl vyexportován");
@@ -162,48 +177,49 @@ public class Controller {
             alert.setGraphic(null);
             alert.setHeaderText(null);
             alert.showAndWait();
-        } catch (Exception e){}
-    }
-
-    public void importCSV(){
-        Stage stage = (Stage) gp.getScene().getWindow();
-        fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose a File");
-        FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("CSV soubor", "*.csv");
-        fileChooser.getExtensionFilters().add(extensionFilter);
-        File file=fileChooser.showOpenDialog(stage);
-
-        if(file != null) {
-            dictionary.clear();
-            //statusText.setText("Vybraný soubor: " + file.getName().toString());
-            try{
-                sc = new Scanner(file,"UTF-8");
-                while (sc.hasNext()) {
-                    String temp = sc.next();
-                    String[] items = temp.split(";");
-                    for (int i = 0; i < items.length; i++){
-                        dictionary.add(items[i]);
-                    }
-            }
-                sc.close();
-                listView.setItems(FXCollections.observableList(dictionary));
-                dictionaryText.setText("Používaný slovník (" + dictionary.size() + " slov)");
-                sc.close();
-            } catch (Exception e){}
+        } catch (Exception e) {
         }
     }
 
-    public void importMessageBox(){
+    public void importCSV() {
+        Stage stage = (Stage) gp.getScene().getWindow();
+        fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose a File");
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("CSV soubor", "*.csv");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        File file = fileChooser.showOpenDialog(stage);
+
+        if (file != null) {
+            dictionary.clear();
+            //statusText.setText("Vybraný soubor: " + file.getName().toString());
+            try {
+                sc = new Scanner(file, "UTF-8");
+                while (sc.hasNext()) {
+                    String temp = sc.next();
+                    String[] items = temp.split(";");
+                    for (int i = 0; i < items.length; i++) {
+                        dictionary.add(items[i]);
+                    }
+                }
+                listView.setItems(FXCollections.observableList(dictionary));
+                dictionaryText.setText("Používaný slovník (" + dictionary.size() + " slov)");
+                sc.close();
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    public void importMessageBox() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Import slovníku");
         alert.setHeaderText("Výběr typu souboru");
         ButtonType csvButton = new ButtonType("CSV");
         ButtonType txtButton = new ButtonType("TXT");
         ButtonType exitButton = new ButtonType("Zrušit", ButtonBar.ButtonData.CANCEL_CLOSE);
-        alert.getButtonTypes().setAll(csvButton,txtButton,exitButton);
+        alert.getButtonTypes().setAll(csvButton, txtButton, exitButton);
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.get() == csvButton) importCSV();
-        else if(result.get() == txtButton) importFile();
+        if (result.get() == csvButton) importCSV();
+        else if (result.get() == txtButton) importFile();
         else alert.close();
     }
 
@@ -214,11 +230,23 @@ public class Controller {
         ButtonType csvButton = new ButtonType("CSV");
         ButtonType txtButton = new ButtonType("TXT");
         ButtonType exitButton = new ButtonType("Zrušit", ButtonBar.ButtonData.CANCEL_CLOSE);
-        alert.getButtonTypes().setAll(csvButton,txtButton,exitButton);
+        alert.getButtonTypes().setAll(csvButton, txtButton, exitButton);
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.get() == csvButton) exportCSV();
-        else if(result.get() == txtButton) export();
+        if (result.get() == csvButton) exportCSV();
+        else if (result.get() == txtButton) export();
         else alert.close();
+    }
+
+    public void findKey() {
+        text = newText.getText();
+        System.out.println(text);
+        System.out.println(key.getText());
+        TextSearching.findInText(text.toLowerCase(), key.getText().toLowerCase());
+    }
+
+    public void setSearchedIndexes(String key, ArrayList<String> list) {
+        listOfIndexes.setItems(FXCollections.observableList(list));
+        keyText.setText(key + " (" + list.size() + ")");
     }
 
 }

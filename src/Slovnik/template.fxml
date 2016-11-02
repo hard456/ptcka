@@ -33,9 +33,11 @@
             <Button fx:id="Export" layoutX="569.0" layoutY="456.0" mnemonicParsing="false" onAction="#exportMessageBox" prefHeight="25.0" prefWidth="218.0" text="Exportovat slovník" />
             <TextArea fx:id="newText" layoutX="14.0" layoutY="80.0" prefHeight="175.0" prefWidth="520.0" />
             <Text layoutX="14.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text pro vyhledávání" wrappingWidth="218.0" />
-            <TextField layoutX="293.0" layoutY="275.0" prefHeight="21.0" prefWidth="161.0" promptText="Vyhledat ve slovníku" />
-            <Button layoutX="469.0" layoutY="275.0" mnemonicParsing="false" text="Hledat" />
+            <TextField fx:id="key" layoutX="293.0" layoutY="275.0" prefHeight="21.0" prefWidth="161.0" promptText="Vyhledat ve slovníku" />
+            <Button layoutX="469.0" layoutY="275.0" mnemonicParsing="false" onAction="#findKey" text="Hledat" />
             <Button fx:id="importText" layoutX="425.0" layoutY="35.0" mnemonicParsing="false" onAction="#importText" text="Načtení textu" />
+            <Text fx:id="keyText" layoutX="117.0" layoutY="356.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="60.0" />
+            <ListView fx:id="listOfIndexes" layoutX="23.0" layoutY="369.0" prefHeight="200.0" prefWidth="200.0" />
          </children>
       </Pane>
    </children>
