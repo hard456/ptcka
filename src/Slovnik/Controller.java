@@ -62,7 +62,7 @@ public class Controller {
                 sc = new Scanner(file, "UTF-8");
                 while (sc.hasNext()) {
                     word = sc.next().toLowerCase();
-                    word = word.replaceAll("[\\d%,.;!?()\\[\\]{}/]", "");
+                    word = word.replaceAll("[\\p{Punct}\\p{Digit}“”’‘`'´·¯—]", "");
                     if(!word.equals("")){
                         dictionary.add(word);
                     }
@@ -149,7 +149,6 @@ public class Controller {
                     text += " ";
                     text += sc.next();
                 }
-                System.out.println(text);
                 newText.setText(text);
                 sc.close();
             } catch (Exception e) {
@@ -241,8 +240,6 @@ public class Controller {
 
     public void findKey() {
         text = newText.getText();
-        System.out.println(text);
-        System.out.println(key.getText());
         TextSearching.findInText(text.toLowerCase(), key.getText().toLowerCase());
     }
 
