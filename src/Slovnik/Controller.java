@@ -82,7 +82,7 @@ public class Controller {
         fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
-        fileChooser.setInitialFileName("slovnik-" + timeStamp + ".txt");
+        fileChooser.setInitialFileName("Slovnik-" + timeStamp + ".txt");
 
         File file = fileChooser.showSaveDialog(stage);
         try {
@@ -159,7 +159,7 @@ public class Controller {
         fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV soubor", "*.csv");
         fileChooser.getExtensionFilters().add(extFilter);
-        fileChooser.setInitialFileName("slovnik-" + timeStamp + ".csv");
+        fileChooser.setInitialFileName("Slovnik-" + timeStamp + ".csv");
 
         File file = fileChooser.showSaveDialog(stage);
         try {
@@ -248,7 +248,7 @@ public class Controller {
         if(!isInDictionary(key)) {
             String word = "";
             int distance = 0;
-
+            MyDistanceComp dis = new MyDistanceComp();
             LinkedList<Distance> list = new LinkedList<Distance>();
 
 
@@ -257,9 +257,9 @@ public class Controller {
                 list.add(new Distance(s, distance));
             }
 
-            Collections.sort(list, new MyDistanceComp());
+            Collections.sort(list, dis);
 
-            for (int i = 0; ((i < 10) || (i < list.size())); i++) {
+            for (int i = 0; ((i < 10) && (i < list.size())); i++) {
                 Distance d = list.get(i);
                 System.out.println(d);
             }
