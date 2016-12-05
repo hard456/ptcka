@@ -1,4 +1,4 @@
-package Slovnik;
+package slovnik;
 
 /**
  * Created by HARD on 05.12.2016.
