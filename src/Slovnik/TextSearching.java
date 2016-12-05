@@ -1,6 +1,4 @@
-package Slovnik;
-
-import javafx.scene.control.Alert;
+package slovnik;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -1,4 +1,4 @@
-package Slovnik;
+package slovnik;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -42,7 +42,7 @@ public class Controller {
     private static Scanner sc;
     String word;
     public String text = "";
-    ArrayList<String> dictionary = new ArrayList();
+    List<String> dictionary = new ArrayList();
 
     public void open() {
         Stage stage = (Stage) gp.getScene().getWindow();
@@ -238,44 +238,21 @@ public class Controller {
         text = newText.getText();
         TextSearching.findInText(text.toLowerCase(), key.getText().toLowerCase());
     }
+/*
+    public void getLevenshteinValues(){
+        String word = "";
+        int distance = 0;
 
-    public void findWord(){
-        text = newText.getText();
-        getLevenshteinValues(key.getText());
+
+
+        LinkedList<Distance> list = new LinkedList<Distance>();
+
+
+
+        list.add(new Distance(word, distance));
     }
-
-    public void getLevenshteinValues(String key){
-        if(!isInDictionary(key)) {
-            String word = "";
-            int distance = 0;
-
-            LinkedList<Distance> list = new LinkedList<Distance>();
-
-
-            for (String s : dictionary) {
-                distance = LevenshteinDistance.distance(key, s);
-                list.add(new Distance(s, distance));
-            }
-
-            Collections.sort(list, new MyDistanceComp());
-
-            for (int i = 0; ((i < 10) || (i < list.size())); i++) {
-                Distance d = list.get(i);
-                System.out.println(d);
-            }
-        }
-    }
-
-    public boolean isInDictionary(String word){
-        for (String s:dictionary) {
-            if(s.equals(word)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void setSearchedIndexes(String key, ArrayList<String> list) {
+*/
+    public void setSearchedIndexes(String key, List<String> list) {
         listOfIndexes.setItems(FXCollections.observableList(list));
         keyText.setText(key + " (" + list.size() + ")");
     }
