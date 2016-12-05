@@ -239,17 +239,40 @@ public class Controller {
         TextSearching.findInText(text.toLowerCase(), key.getText().toLowerCase());
     }
 
-    public void getLevenshteinValues(){
-        String word = "";
-        int distance = 0;
+    public void findWord(){
+        text = newText.getText();
+        getLevenshteinValues(key.getText());
+    }
+
+    public void getLevenshteinValues(String key){
+        if(!isInDictionary(key)) {
+            String word = "";
+            int distance = 0;
+
+            LinkedList<Distance> list = new LinkedList<Distance>();
 
 
+            for (String s : dictionary) {
+                distance = LevenshteinDistance.distance(key, s);
+                list.add(new Distance(s, distance));
+            }
 
-        LinkedList<Distance> list = new LinkedList<Distance>();
+            Collections.sort(list, new MyDistanceComp());
 
+            for (int i = 0; ((i < 10) || (i < list.size())); i++) {
+                Distance d = list.get(i);
+                System.out.println(d);
+            }
+        }
+    }
 
-
-        list.add(new Distance(word, distance));
+    public boolean isInDictionary(String word){
+        for (String s:dictionary) {
+            if(s.equals(word)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setSearchedIndexes(String key, ArrayList<String> list) {
