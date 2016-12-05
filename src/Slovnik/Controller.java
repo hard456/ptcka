@@ -1,4 +1,4 @@
-package slovnik;
+package Slovnik;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -37,6 +37,10 @@ public class Controller {
     private Text keyText;
     @FXML
     private ListView listOfIndexes;
+    @FXML
+    private ListView levenshteinList;
+    @FXML
+    private Button addToDictionary;
 
     private static FileChooser fileChooser;
     private static Scanner sc;
@@ -246,11 +250,11 @@ public class Controller {
 
     public void getLevenshteinValues(String key){
         if(!isInDictionary(key)) {
+            levenshteinList.getItems().clear();
             String word = "";
             int distance = 0;
             MyDistanceComp dis = new MyDistanceComp();
             LinkedList<Distance> list = new LinkedList<Distance>();
-
 
             for (String s : dictionary) {
                 distance = LevenshteinDistance.distance(key, s);
@@ -261,8 +265,9 @@ public class Controller {
 
             for (int i = 0; ((i < 10) && (i < list.size())); i++) {
                 Distance d = list.get(i);
-                System.out.println(d);
+                levenshteinList.getItems().add(d);
             }
+            addToDictionary.setDisable(false);
         }
     }
 
@@ -278,6 +283,8 @@ public class Controller {
     public void setSearchedIndexes(String key, ArrayList<String> list) {
         listOfIndexes.setItems(FXCollections.observableList(list));
         keyText.setText(key + " (" + list.size() + ")");
+        addToDictionary.setDisable(true);
+        levenshteinList.getItems().clear();
     }
 
 }

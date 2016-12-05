@@ -1,4 +1,4 @@
-package slovnik;
+package Slovnik;
 
 import javafx.scene.control.Alert;
 
@@ -32,8 +32,13 @@ public class TextSearching {
         }
 
         Controller ct = Main.fxml.getController();
-        ct.setSearchedIndexes(key, indexList);
-        indexesToFile(indexList, key);
+        if(indexList.size() > 0) {
+            ct.setSearchedIndexes(key, indexList);
+            indexesToFile(indexList, key);
+        }
+        else {
+            ct.findWord();
+        }
     }
 
     private static boolean checkIndexBefore(String text, int index){

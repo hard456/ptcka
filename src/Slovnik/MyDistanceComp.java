@@ -1,4 +1,4 @@
-package slovnik;
+package Slovnik;
 
 import java.util.Comparator;
 

@@ -11,7 +11,7 @@
 <?import javafx.scene.control.Label?>
 <?import java.net.URL?>
 
-<GridPane fx:id="gp" alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="slovnik.Controller">
+<GridPane fx:id="gp" alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Slovnik.Controller">
    <columnConstraints>
       <ColumnConstraints />
    </columnConstraints>
@@ -31,13 +31,18 @@
             <Text fx:id="dictionaryText" layoutX="568.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Používaný slovník" textAlignment="CENTER" wrappingWidth="218.0" />
             <ListView fx:id="listView" layoutX="568.0" layoutY="146.0" prefHeight="300.0" prefWidth="218.0" />
             <Button fx:id="Export" layoutX="569.0" layoutY="456.0" mnemonicParsing="false" onAction="#exportMessageBox" prefHeight="25.0" prefWidth="218.0" text="Exportovat slovník" />
-            <TextArea fx:id="newText" layoutX="14.0" layoutY="80.0" prefHeight="175.0" prefWidth="520.0" />
+            <TextArea fx:id="newText" layoutX="14.0" layoutY="80.0" prefHeight="175.0" prefWidth="520.0" wrapText="true" />
             <Text layoutX="14.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text pro vyhledávání" wrappingWidth="218.0" />
-            <TextField fx:id="key" layoutX="293.0" layoutY="275.0" prefHeight="21.0" prefWidth="161.0" promptText="Vyhledat ve slovníku" />
-            <Button layoutX="469.0" layoutY="275.0" mnemonicParsing="false" onAction="#findWord" text="Hledat" />
+            <TextField fx:id="key" layoutX="307.0" layoutY="265.0" prefHeight="21.0" prefWidth="161.0" promptText="Vyhledat ve slovníku" />
+            <Button layoutX="483.0" layoutY="265.0" mnemonicParsing="false" onAction="#findKey" text="Hledat" />
+            <Separator layoutX="3.0" layoutY="299.0" prefHeight="1.0" prefWidth="536.0" />
             <Button fx:id="importText" layoutX="425.0" layoutY="35.0" mnemonicParsing="false" onAction="#importText" text="Načtení textu" />
-            <Text fx:id="keyText" layoutX="117.0" layoutY="356.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="60.0" />
-            <ListView fx:id="listOfIndexes" layoutX="23.0" layoutY="369.0" prefHeight="200.0" prefWidth="200.0" />
+            <Text layoutX="43.0" layoutY="321.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Výskyt hledaného slova v textu" textAlignment="CENTER" wrappingWidth="200.0" />
+            <Text fx:id="keyText" layoutX="43.0" layoutY="338.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="200.0" />
+            <ListView fx:id="levenshteinList" layoutX="320.0" layoutY="328.0" prefHeight="235.0" prefWidth="200.0" />
+            <Text layoutX="320.0" layoutY="321.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10 nejbližších slov ze slovníku" textAlignment="CENTER" wrappingWidth="200.0" />
+            <ListView fx:id="listOfIndexes" layoutX="43.0" layoutY="345.0" prefHeight="243.0" prefWidth="200.0" />
+            <Button fx:id="addToDictionary" layoutX="320.0" layoutY="561.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Přidat slovo do slovníku" disable="true" />
          </children>
       </Pane>
    </children>
