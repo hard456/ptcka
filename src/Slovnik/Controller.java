@@ -42,7 +42,7 @@ public class Controller {
     private static Scanner sc;
     String word;
     public String text = "";
-    List<String> dictionary = new ArrayList();
+    ArrayList<String> dictionary = new ArrayList();
 
     public void open() {
         Stage stage = (Stage) gp.getScene().getWindow();
@@ -82,7 +82,7 @@ public class Controller {
         fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textový soubor", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
-        fileChooser.setInitialFileName("slovnik-" + timeStamp + ".txt");
+        fileChooser.setInitialFileName("Slovnik-" + timeStamp + ".txt");
 
         File file = fileChooser.showSaveDialog(stage);
         try {
@@ -159,7 +159,7 @@ public class Controller {
         fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV soubor", "*.csv");
         fileChooser.getExtensionFilters().add(extFilter);
-        fileChooser.setInitialFileName("slovnik-" + timeStamp + ".csv");
+        fileChooser.setInitialFileName("Slovnik-" + timeStamp + ".csv");
 
         File file = fileChooser.showSaveDialog(stage);
         try {
@@ -238,21 +238,44 @@ public class Controller {
         text = newText.getText();
         TextSearching.findInText(text.toLowerCase(), key.getText().toLowerCase());
     }
-/*
-    public void getLevenshteinValues(){
-        String word = "";
-        int distance = 0;
 
-
-
-        LinkedList<Distance> list = new LinkedList<Distance>();
-
-
-
-        list.add(new Distance(word, distance));
+    public void findWord(){
+        text = newText.getText();
+        getLevenshteinValues(key.getText());
     }
-*/
-    public void setSearchedIndexes(String key, List<String> list) {
+
+    public void getLevenshteinValues(String key){
+        if(!isInDictionary(key)) {
+            String word = "";
+            int distance = 0;
+            MyDistanceComp dis = new MyDistanceComp();
+            LinkedList<Distance> list = new LinkedList<Distance>();
+
+
+            for (String s : dictionary) {
+                distance = LevenshteinDistance.distance(key, s);
+                list.add(new Distance(s, distance));
+            }
+
+            Collections.sort(list, dis);
+
+            for (int i = 0; ((i < 10) && (i < list.size())); i++) {
+                Distance d = list.get(i);
+                System.out.println(d);
+            }
+        }
+    }
+
+    public boolean isInDictionary(String word){
+        for (String s:dictionary) {
+            if(s.equals(word)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setSearchedIndexes(String key, ArrayList<String> list) {
         listOfIndexes.setItems(FXCollections.observableList(list));
         keyText.setText(key + " (" + list.size() + ")");
     }

@@ -1,4 +1,4 @@
-package Slovnik;
+package slovnik;
 
 import java.util.Comparator;
 
@@ -12,8 +12,11 @@ public class MyDistanceComp implements Comparator<Distance> {
         if(d1.getDistance() < d2.getDistance()){
             return -1;
         }
-        else{
+        else if(d1.getDistance() > d2.getDistance()){
             return 1;
+        }
+        else{
+            return 0;
         }
     }
 

@@ -1,5 +1,7 @@
 package slovnik;
 
+import javafx.scene.control.Alert;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
