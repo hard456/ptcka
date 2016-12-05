@@ -1,4 +1,4 @@
-package Slovnik;
+package slovnik;
 
 import javafx.scene.control.Alert;
 

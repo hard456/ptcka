@@ -11,7 +11,7 @@
 <?import javafx.scene.control.Label?>
 <?import java.net.URL?>
 
-<GridPane fx:id="gp" alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Slovnik.Controller">
+<GridPane fx:id="gp" alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="slovnik.Controller">
    <columnConstraints>
       <ColumnConstraints />
    </columnConstraints>
