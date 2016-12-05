@@ -3,18 +3,14 @@ package Slovnik;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.swing.text.html.*;
-import java.awt.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -241,6 +237,19 @@ public class Controller {
     public void findKey() {
         text = newText.getText();
         TextSearching.findInText(text.toLowerCase(), key.getText().toLowerCase());
+    }
+
+    public void getLevenshteinValues(){
+        String word = "";
+        int distance = 0;
+
+
+
+        LinkedList<Distance> list = new LinkedList<Distance>();
+
+
+
+        list.add(new Distance(word, distance));
     }
 
     public void setSearchedIndexes(String key, ArrayList<String> list) {
