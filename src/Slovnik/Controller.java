@@ -1,4 +1,4 @@
-package Slovnik;
+package slovnik;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
