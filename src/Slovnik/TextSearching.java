@@ -1,7 +1,5 @@
 package Slovnik;
 
-import javafx.scene.control.Alert;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ public class TextSearching {
                     index = text.indexOf(key, index + 1);
                 }
             }
-
         }
 
         Controller ct = Main.fxml.getController();

@@ -42,6 +42,7 @@ public class Controller {
     @FXML
     private Button addToDictionary;
 
+    private String findingWord;
     private static FileChooser fileChooser;
     private static Scanner sc;
     String word;
@@ -140,6 +141,7 @@ public class Controller {
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             try {
+                text = "";
                 sc = new Scanner(file, "UTF-8");
                 while (sc.hasNext()) {
                     if (count != 0) {
@@ -239,6 +241,9 @@ public class Controller {
     }
 
     public void findKey() {
+        findingWord = key.getText();
+        keyText.setText("");
+        listOfIndexes.getItems().clear();
         text = newText.getText();
         TextSearching.findInText(text.toLowerCase(), key.getText().toLowerCase());
     }
@@ -249,25 +254,28 @@ public class Controller {
     }
 
     public void getLevenshteinValues(String key){
-        if(!isInDictionary(key)) {
-            levenshteinList.getItems().clear();
-            String word = "";
-            int distance = 0;
-            MyDistanceComp dis = new MyDistanceComp();
-            LinkedList<Distance> list = new LinkedList<Distance>();
+        if(key.replaceAll("[\\p{Punct}\\p{Digit}“”’‘`'´·¯—]", "").equals(key)) {
+            if (!isInDictionary(key)) {
+                levenshteinList.getItems().clear();
+                String word = "";
+                int distance = 0;
+                MyDistanceComp dis = new MyDistanceComp();
+                LinkedList<Distance> list = new LinkedList<Distance>();
 
-            for (String s : dictionary) {
-                distance = LevenshteinDistance.distance(key, s);
-                list.add(new Distance(s, distance));
+                for (String s : dictionary) {
+                    distance = LevenshteinDistance.distance(key, s);
+                    list.add(new Distance(s, distance));
+                }
+
+                Collections.sort(list, dis);
+
+                for (int i = 0; ((i < 10) && (i < list.size())); i++) {
+                    Distance d = list.get(i);
+                    levenshteinList.getItems().add(d);
+                }
+                addToDictionary.setDisable(false);
+
             }
-
-            Collections.sort(list, dis);
-
-            for (int i = 0; ((i < 10) && (i < list.size())); i++) {
-                Distance d = list.get(i);
-                levenshteinList.getItems().add(d);
-            }
-            addToDictionary.setDisable(false);
         }
     }
 
@@ -278,6 +286,16 @@ public class Controller {
             }
         }
         return false;
+    }
+
+    public void addWordDictionary(){
+            dictionary.add(findingWord);
+            Set<String> hs = new HashSet(dictionary);
+            dictionary.clear();
+            dictionary.addAll(hs);
+            Collections.sort(dictionary, String.CASE_INSENSITIVE_ORDER);
+            listView.setItems(FXCollections.observableList(dictionary));
+            addToDictionary.setDisable(true);
     }
 
     public void setSearchedIndexes(String key, ArrayList<String> list) {
