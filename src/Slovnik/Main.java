@@ -13,6 +13,12 @@ public class Main extends Application {
 
     public static FXMLLoader fxml;
 
+    /**
+     * Vytvoření rozhraní.
+     * @param primaryStage
+     * @throws Exception
+     */
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("template.fxml"));

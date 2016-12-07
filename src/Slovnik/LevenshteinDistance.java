@@ -1,9 +1,16 @@
 package Slovnik;
 
 /**
- * Created by HARD on 05.12.2016.
+ * Implementace Levenshteinovy metriky.
  */
 public class LevenshteinDistance {
+
+    /**
+     * Metoda pro výpočet Levenshteinovy metriky dvou slov.
+     * @param a zadané slovo.
+     * @param b slovo ze slovníku.
+     * @return vrací distanci.
+     */
 
     public static int distance(String a, String b) {
         a = a.toLowerCase();

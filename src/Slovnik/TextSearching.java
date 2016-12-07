@@ -5,14 +5,18 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 
 /**
- * Created by HARD on 02.11.2016.
+ * Třída pro vyhledávání v textu.
  */
 public class TextSearching {
 
     private String textToFind;
     public static ArrayList<String> indexList = new ArrayList<String>();
 
-
+    /**
+     * Metoda, která vyhledává slovo v textu.
+     * @param text zadaný text, v kterém se vyhledává.
+     * @param key slovo, která se vyhledává.
+     */
     public static void findInText(String text, String key) {
         indexList.clear();
         if (!text.equals("") && !key.equals("")) {
@@ -34,10 +38,16 @@ public class TextSearching {
             indexesToFile(indexList, key);
         }
         else {
-            ct.findWord();
+            ct.getLevenshteinValues();
         }
     }
 
+    /**
+     * Metoda, která zkoumá index před slovem, které se vyhledalo.
+     * @param text zadaný text, v kterém se hledá.
+     * @param index hodnota indexu, na který se tato metoda kouká.
+     * @return v případě, že se jedná o true, tak je pozice před slovem v pořádku.
+     */
     private static boolean checkIndexBefore(String text, int index){
         if(index != 0){
             if(text.charAt(index - 1) == ' '){
@@ -49,6 +59,13 @@ public class TextSearching {
 
     }
 
+    /**
+     * Metoda, která se kouká za index slova, které se vyhledalo.
+     * @param text zadaný text, v kterém se hledá.
+     * @param index hodnota indexu, na který se metoda kouká.
+     * @return v případě, že metoda vracá true, tak je index za slovem je v pořádku.
+     */
+
     private static boolean checkIndexAfter(String text, int index){
         if(index != text.length()){
             if("., !?".indexOf(text.charAt(index)) != -1){
@@ -59,6 +76,11 @@ public class TextSearching {
         return true;
     }
 
+    /**
+     * Metoda, která zapíše indexy do souboru v případě, že dojde k nalezení slova.
+     * @param list seznam indexů.
+     * @param key slovo, které se hledalo.
+     */
     private static void indexesToFile(ArrayList<String> list, String key){
         File file = new File("output.txt");
         try {

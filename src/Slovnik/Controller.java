@@ -14,6 +14,10 @@ import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Controller pro práci s FXML.
+ */
+
 public class Controller {
     @FXML
     public Text statusText;
@@ -49,6 +53,10 @@ public class Controller {
     public String text = "";
     ArrayList<String> dictionary = new ArrayList();
 
+    /**
+     * Importuje text, z kterého udělá slovník.
+     */
+
     public void open() {
         Stage stage = (Stage) gp.getScene().getWindow();
         fileChooser = new FileChooser();
@@ -63,7 +71,7 @@ public class Controller {
                 sc = new Scanner(file, "UTF-8");
                 while (sc.hasNext()) {
                     word = sc.next().toLowerCase();
-                    word = word.replaceAll("[\\p{Punct}\\p{Digit}“”’‘`'´·¯—]", "");
+                    word = word.replaceAll("[\\p{Punct}\\p{Digit}]", "");
                     if(!word.equals("")){
                         dictionary.add(word);
                     }
@@ -80,6 +88,10 @@ public class Controller {
         }
         //else statusText.setText("Nebyl vybrán žádný soubor");
     }
+
+    /**
+     * Exportuje slovník do textového souboru.
+     */
 
     public void export() {
         Stage stage = (Stage) gp.getScene().getWindow();
@@ -105,6 +117,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Importuje slovník, který je v textovém souboru do ListView.
+     */
+
     public void importFile() {
         Stage stage = (Stage) gp.getScene().getWindow();
         fileChooser = new FileChooser();
@@ -128,6 +144,10 @@ public class Controller {
         }
         //else statusText.setText("Nebyl vybrán žádný soubor");
     }
+
+    /**
+     * Importuje text, který pak slouží pro vyhledávání.
+     */
 
     public void importText() {
         int count = 0;
@@ -158,6 +178,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Exportuje slovník do CSV souboru.
+     * @throws FileNotFoundException
+     */
+
     public void exportCSV() throws FileNotFoundException {
         String csvText = "";
         Stage stage = (Stage) gp.getScene().getWindow();
@@ -183,6 +208,10 @@ public class Controller {
         } catch (Exception e) {
         }
     }
+
+    /**
+     * Importuje slovník, který je uložen v souboru typu CSV do ListView.
+     */
 
     public void importCSV() {
         Stage stage = (Stage) gp.getScene().getWindow();
@@ -212,6 +241,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Message box pro výběr typu importu.
+     */
+
     public void importMessageBox() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Import slovníku");
@@ -225,6 +258,11 @@ public class Controller {
         else if (result.get() == txtButton) importFile();
         else alert.close();
     }
+
+    /**
+     * Message box pro výběr typu exportu.
+     * @throws FileNotFoundException
+     */
 
     public void exportMessageBox() throws FileNotFoundException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -240,21 +278,34 @@ public class Controller {
         else alert.close();
     }
 
+    /**
+     * Metoda, která hledá slovo v načteném textu.
+     */
+
     public void findKey() {
         findingWord = key.getText();
+        if(!findingWord.equals("") && findingWord.replaceAll("[\\p{Punct}\\p{Digit} ]", "").equals(findingWord)){
+        if(!isInDictionary(findingWord)){
+            addToDictionary.setDisable(false);
+        }
+        else{
+            addToDictionary.setDisable(true);
+        }
         keyText.setText("");
         listOfIndexes.getItems().clear();
         text = newText.getText();
         TextSearching.findInText(text.toLowerCase(), key.getText().toLowerCase());
+        }
     }
 
-    public void findWord(){
-        text = newText.getText();
-        getLevenshteinValues(key.getText());
-    }
+    /**
+     * Metoda prochází pustupně slovník a porovnává hodnoty se zadaným slovem.
+     * Dochází zde k vypíšu 10 prvků slovníku s nejnižší nalezenou hodnotou.
+     */
 
-    public void getLevenshteinValues(String key){
-        if(key.replaceAll("[\\p{Punct}\\p{Digit}“”’‘`'´·¯—]", "").equals(key)) {
+    public void getLevenshteinValues(){
+        String key = this.key.getText();
+        if(key.replaceAll("[\\p{Punct}\\p{Digit}]", "").equals(key)) {
             if (!isInDictionary(key)) {
                 levenshteinList.getItems().clear();
                 String word = "";
@@ -279,6 +330,12 @@ public class Controller {
         }
     }
 
+    /**
+     * Zkontroluje, zda-li je slovo ve slovníku.
+     * @param word slovo hledající ve slovníku.
+     * @return když je ve slovníku, tak vrátí true, jinak false.
+     */
+
     public boolean isInDictionary(String word){
         for (String s:dictionary) {
             if(s.equals(word)){
@@ -287,6 +344,10 @@ public class Controller {
         }
         return false;
     }
+
+    /**
+     * Přidá slovo do slovínku. List view se slovníkem aktualizace.
+     */
 
     public void addWordDictionary(){
             dictionary.add(findingWord);
@@ -298,10 +359,15 @@ public class Controller {
             addToDictionary.setDisable(true);
     }
 
+    /**
+     * Zobrazí počáteční a konečné indexy nalezené slova do ListView.
+     * @param key hledaný klíč.
+     * @param list indexy hledaného slova.
+     */
+
     public void setSearchedIndexes(String key, ArrayList<String> list) {
         listOfIndexes.setItems(FXCollections.observableList(list));
         keyText.setText(key + " (" + list.size() + ")");
-        addToDictionary.setDisable(true);
         levenshteinList.getItems().clear();
     }
 
