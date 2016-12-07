@@ -38,11 +38,11 @@
             <Separator layoutX="251.0" layoutY="286.0" prefHeight="1.0" prefWidth="536.0" />
             <Button fx:id="importText" layoutX="692.0" layoutY="34.0" mnemonicParsing="false" onAction="#importText" text="Načtení textu" />
             <Text layoutX="582.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Výskyt hledaného slova v textu" textAlignment="CENTER" wrappingWidth="200.0" />
-            <Text fx:id="keyText" layoutX="582.0" layoutY="331.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="200.0" />
+            <Text fx:id="keyText" layoutX="582.0" layoutY="331.0" strokeType="OUTSIDE" strokeWidth="0.0" text="..." textAlignment="CENTER" wrappingWidth="200.0" />
             <ListView fx:id="levenshteinList" layoutX="262.0" layoutY="324.0" prefHeight="235.0" prefWidth="200.0" />
             <Text layoutX="262.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10 nejbližších slov ze slovníku" textAlignment="CENTER" wrappingWidth="200.0" />
-            <ListView fx:id="listOfIndexes" layoutX="582.0" layoutY="338.0" prefHeight="243.0" prefWidth="200.0" />
-            <Button fx:id="addToDictionary" onAction="#addWordDictionary" disable="true" layoutX="262.0" layoutY="557.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Přidat hledané slovo do slovníku" />
+            <ListView fx:id="listOfIndexes" layoutX="582.0" layoutY="338.0" prefHeight="221.0" prefWidth="200.0" />
+            <Button fx:id="addToDictionary" disable="true" layoutX="419.0" layoutY="565.0" mnemonicParsing="false" onAction="#addWordDictionary" prefHeight="25.0" prefWidth="200.0" text="Přidat hledané slovo do slovníku" />
          </children>
       </Pane>
    </children>
