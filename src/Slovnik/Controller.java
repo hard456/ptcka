@@ -51,7 +51,7 @@ public class Controller {
     private static Scanner sc;
     String word;
     public String text = "";
-    ArrayList<String> dictionary = new ArrayList();
+    List<String> dictionary = new ArrayList();
 
     /**
      * Importuje text, z kterého udělá slovník.
@@ -84,6 +84,7 @@ public class Controller {
                 dictionaryText.setText("Používaný slovník (" + dictionary.size() + " slov)");
                 sc.close();
             } catch (Exception e) {
+                System.out.println("Chyba při importu textu");
             }
         }
         //else statusText.setText("Nebyl vybrán žádný soubor");
@@ -114,6 +115,7 @@ public class Controller {
             alert.setHeaderText(null);
             alert.showAndWait();
         } catch (Exception e) {
+            System.out.println("Chyba při exportu textu");
         }
     }
 
@@ -140,6 +142,7 @@ public class Controller {
                 listView.setItems(FXCollections.observableList(dictionary));
                 dictionaryText.setText("Používaný slovník (" + dictionary.size() + " slov)");
             } catch (Exception e) {
+                System.out.println("Chyba při importu textu");
             }
         }
         //else statusText.setText("Nebyl vybrán žádný soubor");
@@ -174,6 +177,7 @@ public class Controller {
                 newText.setText(text);
                 sc.close();
             } catch (Exception e) {
+                System.out.println("Chyba při importu textu");
             }
         }
     }
@@ -206,6 +210,7 @@ public class Controller {
             alert.setHeaderText(null);
             alert.showAndWait();
         } catch (Exception e) {
+            System.out.println("Chyba při exportu CSV");
         }
     }
 
@@ -237,6 +242,7 @@ public class Controller {
                 dictionaryText.setText("Používaný slovník (" + dictionary.size() + " slov)");
                 sc.close();
             } catch (Exception e) {
+                System.out.println("Chyba při importu CSV");
             }
         }
     }
@@ -254,9 +260,15 @@ public class Controller {
         ButtonType exitButton = new ButtonType("Zrušit", ButtonBar.ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().setAll(csvButton, txtButton, exitButton);
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == csvButton) importCSV();
-        else if (result.get() == txtButton) importFile();
-        else alert.close();
+        if (result.get() == csvButton) {
+            importCSV();
+        }
+        else if (result.get() == txtButton) {
+            importFile();
+        }
+        else {
+            alert.close();
+        }
     }
 
     /**
@@ -273,9 +285,15 @@ public class Controller {
         ButtonType exitButton = new ButtonType("Zrušit", ButtonBar.ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().setAll(csvButton, txtButton, exitButton);
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == csvButton) exportCSV();
-        else if (result.get() == txtButton) export();
-        else alert.close();
+        if (result.get() == csvButton) {
+            exportCSV();
+        }
+        else if (result.get() == txtButton) {
+            export();
+        }
+        else {
+            alert.close();
+        }
     }
 
     /**
@@ -304,17 +322,15 @@ public class Controller {
      */
 
     public void getLevenshteinValues(){
-        String key = this.key.getText();
-        if(key.replaceAll("[\\p{Punct}\\p{Digit}]", "").equals(key)) {
-            if (!isInDictionary(key)) {
+
+            if (!isInDictionary(key.getText()) && key.getText().replaceAll("[\\p{Punct}\\p{Digit}]", "").equals(key.getText())) {
                 levenshteinList.getItems().clear();
-                String word = "";
                 int distance = 0;
                 MyDistanceComp dis = new MyDistanceComp();
                 LinkedList<Distance> list = new LinkedList<Distance>();
 
                 for (String s : dictionary) {
-                    distance = LevenshteinDistance.distance(key, s);
+                    distance = LevenshteinDistance.distance(key.getText(), s);
                     list.add(new Distance(s, distance));
                 }
 
@@ -327,7 +343,6 @@ public class Controller {
                 addToDictionary.setDisable(false);
 
             }
-        }
     }
 
     /**
@@ -365,7 +380,7 @@ public class Controller {
      * @param list indexy hledaného slova.
      */
 
-    public void setSearchedIndexes(String key, ArrayList<String> list) {
+    public void setSearchedIndexes(String key, List<String> list) {
         listOfIndexes.setItems(FXCollections.observableList(list));
         keyText.setText(key + " (" + list.size() + ")");
         levenshteinList.getItems().clear();

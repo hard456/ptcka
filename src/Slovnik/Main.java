@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.IOException;
+
 public class Main extends Application {
 
     public static FXMLLoader fxml;
@@ -20,9 +22,14 @@ public class Main extends Application {
      */
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("template.fxml"));
-        Parent root = loader.load();
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            System.out.println("Problem při načtení FXML templatu");
+        }
         primaryStage.setTitle("PT - Slovník");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.setResizable(false);

@@ -3,14 +3,14 @@ package Slovnik;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Třída pro vyhledávání v textu.
  */
 public class TextSearching {
 
-    private String textToFind;
-    public static ArrayList<String> indexList = new ArrayList<String>();
+    public static List<String> indexList = new ArrayList<String>();
 
     /**
      * Metoda, která vyhledává slovo v textu.
@@ -50,12 +50,9 @@ public class TextSearching {
      */
     private static boolean checkIndexBefore(String text, int index){
         if(index != 0){
-            if(text.charAt(index - 1) == ' '){
-                return true;
-            }
-            return false;
+            return(text.charAt(index - 1) == ' ');
         }
-        return true;
+            return true;
 
     }
 
@@ -68,10 +65,7 @@ public class TextSearching {
 
     private static boolean checkIndexAfter(String text, int index){
         if(index != text.length()){
-            if("., !?".indexOf(text.charAt(index)) != -1){
-                return true;
-            }
-            return false;
+            return("., !?".indexOf(text.charAt(index)) != -1);
         }
         return true;
     }
@@ -81,7 +75,7 @@ public class TextSearching {
      * @param list seznam indexů.
      * @param key slovo, které se hledalo.
      */
-    private static void indexesToFile(ArrayList<String> list, String key){
+    private static void indexesToFile(List<String> list, String key){
         File file = new File("output.txt");
         try {
             FileWriter writer = new FileWriter(file);
@@ -91,6 +85,7 @@ public class TextSearching {
             }
             writer.close();
         } catch (Exception e) {
+            System.out.println("Nepovedlo se vypsat indexy do souboru");
         }
     }
 

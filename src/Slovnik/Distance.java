@@ -1,7 +1,7 @@
 package Slovnik;
 
 /**
- * Třída, která má proměnnou word a distance. Lze tyto hodnoty nastavovat a vracet.
+ * Třída pro uložení Levenshteinovy distance daného slova.
  */
 
 public class Distance {
