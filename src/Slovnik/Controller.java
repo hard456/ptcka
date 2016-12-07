@@ -8,9 +8,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -153,9 +151,6 @@ public class Controller {
      */
 
     public void importText() {
-        int count = 0;
-        newText.setMaxWidth(520);
-        newText.setWrapText(true);
         Stage stage = (Stage) gp.getScene().getWindow();
         fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a File");
@@ -164,17 +159,11 @@ public class Controller {
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             try {
-                text = "";
-                sc = new Scanner(file, "UTF-8");
-                while (sc.hasNext()) {
-                    if (count != 0) {
-                        text += " ";
-                    }
-                    count++;
-                    text += " ";
-                    text += sc.next();
+                BufferedReader bf = new BufferedReader(new FileReader(file));
+                String input;
+                while ((input = bf.readLine()) != null) {
+                    newText.appendText(input);
                 }
-                newText.setText(text);
                 sc.close();
             } catch (Exception e) {
                 System.out.println("Chyba při importu textu");
