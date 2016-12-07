@@ -1,7 +1,9 @@
 package Slovnik;
 
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -49,7 +51,7 @@ public class Controller {
     private static Scanner sc;
     String word;
     public String text = "";
-    List<String> dictionary = new ArrayList();
+    Set<String> dictionary = new HashSet<>();
 
     /**
      * Importuje text, z kterého udělá slovník.
@@ -70,15 +72,13 @@ public class Controller {
                 while (sc.hasNext()) {
                     word = sc.next().toLowerCase();
                     word = word.replaceAll("[\\p{Punct}\\p{Digit}]", "");
-                    if(!word.equals("")){
+                    if (!word.equals("")) {
                         dictionary.add(word);
                     }
                 }
-                Set<String> hs = new HashSet(dictionary);
-                dictionary.clear();
-                dictionary.addAll(hs);
-                Collections.sort(dictionary, String.CASE_INSENSITIVE_ORDER);
-                listView.setItems(FXCollections.observableList(dictionary));
+                List dictionaryList = new ArrayList<>(dictionary);
+                Collections.sort(dictionaryList, String.CASE_INSENSITIVE_ORDER);
+                listView.setItems(FXCollections.observableList(dictionaryList));
                 dictionaryText.setText("Používaný slovník (" + dictionary.size() + " slov)");
                 sc.close();
             } catch (Exception e) {
@@ -137,7 +137,8 @@ public class Controller {
                     dictionary.add(sc.next());
                 }
                 sc.close();
-                listView.setItems(FXCollections.observableList(dictionary));
+                List dictionaryList = new ArrayList<>(dictionary);
+                listView.setItems(FXCollections.observableList(dictionaryList));
                 dictionaryText.setText("Používaný slovník (" + dictionary.size() + " slov)");
             } catch (Exception e) {
                 System.out.println("Chyba při importu textu");
@@ -150,6 +151,7 @@ public class Controller {
      * Importuje text, který pak slouží pro vyhledávání.
      */
 
+    @FXML
     public void importText() {
         Stage stage = (Stage) gp.getScene().getWindow();
         fileChooser = new FileChooser();
@@ -164,7 +166,7 @@ public class Controller {
                 while ((input = bf.readLine()) != null) {
                     newText.appendText(input);
                 }
-                sc.close();
+                bf.close();
             } catch (Exception e) {
                 System.out.println("Chyba při importu textu");
             }
@@ -173,6 +175,7 @@ public class Controller {
 
     /**
      * Exportuje slovník do CSV souboru.
+     *
      * @throws FileNotFoundException
      */
 
@@ -217,7 +220,6 @@ public class Controller {
 
         if (file != null) {
             dictionary.clear();
-            //statusText.setText("Vybraný soubor: " + file.getName().toString());
             try {
                 sc = new Scanner(file, "UTF-8");
                 while (sc.hasNext()) {
@@ -227,7 +229,8 @@ public class Controller {
                         dictionary.add(items[i]);
                     }
                 }
-                listView.setItems(FXCollections.observableList(dictionary));
+                List dictionaryList = new ArrayList<>(dictionary);
+                listView.setItems(FXCollections.observableList(dictionaryList));
                 dictionaryText.setText("Používaný slovník (" + dictionary.size() + " slov)");
                 sc.close();
             } catch (Exception e) {
@@ -251,17 +254,16 @@ public class Controller {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == csvButton) {
             importCSV();
-        }
-        else if (result.get() == txtButton) {
+        } else if (result.get() == txtButton) {
             importFile();
-        }
-        else {
+        } else {
             alert.close();
         }
     }
 
     /**
      * Message box pro výběr typu exportu.
+     *
      * @throws FileNotFoundException
      */
 
@@ -276,11 +278,9 @@ public class Controller {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == csvButton) {
             exportCSV();
-        }
-        else if (result.get() == txtButton) {
+        } else if (result.get() == txtButton) {
             export();
-        }
-        else {
+        } else {
             alert.close();
         }
     }
@@ -291,17 +291,16 @@ public class Controller {
 
     public void findKey() {
         findingWord = key.getText();
-        if(!findingWord.equals("") && findingWord.replaceAll("[\\p{Punct}\\p{Digit} ]", "").equals(findingWord)){
-        if(!isInDictionary(findingWord)){
-            addToDictionary.setDisable(false);
-        }
-        else{
-            addToDictionary.setDisable(true);
-        }
-        keyText.setText("");
-        listOfIndexes.getItems().clear();
-        text = newText.getText();
-        TextSearching.findInText(text.toLowerCase(), key.getText().toLowerCase());
+        if (!findingWord.equals("") && findingWord.replaceAll("[\\p{Punct}\\p{Digit} ]", "").equals(findingWord)) {
+            if (!isInDictionary(findingWord)) {
+                addToDictionary.setDisable(false);
+            } else {
+                addToDictionary.setDisable(true);
+            }
+            keyText.setText("");
+            listOfIndexes.getItems().clear();
+            text = newText.getText();
+            TextSearching.findInText(text.toLowerCase(), key.getText().toLowerCase());
         }
     }
 
@@ -310,39 +309,40 @@ public class Controller {
      * Dochází zde k vypíšu 10 prvků slovníku s nejnižší nalezenou hodnotou.
      */
 
-    public void getLevenshteinValues(){
+    public void getLevenshteinValues() {
 
-            if (!isInDictionary(key.getText()) && key.getText().replaceAll("[\\p{Punct}\\p{Digit}]", "").equals(key.getText())) {
-                levenshteinList.getItems().clear();
-                int distance = 0;
-                MyDistanceComp dis = new MyDistanceComp();
-                LinkedList<Distance> list = new LinkedList<Distance>();
+        if (!isInDictionary(key.getText()) && key.getText().replaceAll("[\\p{Punct}\\p{Digit}]", "").equals(key.getText())) {
+            levenshteinList.getItems().clear();
+            int distance = 0;
+            MyDistanceComp dis = new MyDistanceComp();
+            LinkedList<Distance> list = new LinkedList<Distance>();
 
-                for (String s : dictionary) {
-                    distance = LevenshteinDistance.distance(key.getText(), s);
-                    list.add(new Distance(s, distance));
-                }
-
-                Collections.sort(list, dis);
-
-                for (int i = 0; ((i < 10) && (i < list.size())); i++) {
-                    Distance d = list.get(i);
-                    levenshteinList.getItems().add(d);
-                }
-                addToDictionary.setDisable(false);
-
+            for (String s : dictionary) {
+                distance = LevenshteinDistance.distance(key.getText(), s);
+                list.add(new Distance(s, distance));
             }
+
+            Collections.sort(list, dis);
+
+            for (int i = 0; ((i < 10) && (i < list.size())); i++) {
+                Distance d = list.get(i);
+                levenshteinList.getItems().add(d);
+            }
+            addToDictionary.setDisable(false);
+
+        }
     }
 
     /**
      * Zkontroluje, zda-li je slovo ve slovníku.
+     *
      * @param word slovo hledající ve slovníku.
      * @return když je ve slovníku, tak vrátí true, jinak false.
      */
 
-    public boolean isInDictionary(String word){
-        for (String s:dictionary) {
-            if(s.equals(word)){
+    public boolean isInDictionary(String word) {
+        for (String s : dictionary) {
+            if (s.equals(word)) {
                 return true;
             }
         }
@@ -353,19 +353,18 @@ public class Controller {
      * Přidá slovo do slovínku. List view se slovníkem aktualizace.
      */
 
-    public void addWordDictionary(){
-            dictionary.add(findingWord);
-            Set<String> hs = new HashSet(dictionary);
-            dictionary.clear();
-            dictionary.addAll(hs);
-            Collections.sort(dictionary, String.CASE_INSENSITIVE_ORDER);
-            listView.setItems(FXCollections.observableList(dictionary));
-            addToDictionary.setDisable(true);
+    public void addWordDictionary() {
+        dictionary.add(findingWord);
+        List dictionaryList = new ArrayList<>(dictionary);
+        Collections.sort(dictionaryList, String.CASE_INSENSITIVE_ORDER);
+        listView.setItems(FXCollections.observableList(dictionaryList));
+        addToDictionary.setDisable(true);
     }
 
     /**
      * Zobrazí počáteční a konečné indexy nalezené slova do ListView.
-     * @param key hledaný klíč.
+     *
+     * @param key  hledaný klíč.
      * @param list indexy hledaného slova.
      */
 
